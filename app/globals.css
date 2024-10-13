@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bgImg {
+  position: relative;
+  overflow: hidden;
+}
+
+.bgImg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/bgo.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1; /* Ensure the background is behind the content */
+  transition: background-size 0.3s ease, background-position 0.3s ease;
+}
+
+.bgImg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .bgImg::before {
+    background-size: contain; /* Adjust as needed for smaller screens */
+    background-position: center;
+    background-color: #272727;
+  }
+}
+
+@media (max-width: 480px) {
+  .bgImg::before {
+    background-size: contain; /* Adjust as needed for very small screens */
+    background-position: center;
+    background-color: #272727;
+  }
+}
