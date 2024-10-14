@@ -1,3 +1,4 @@
+// pages.js (Next)
 import Navbar from "./components/Navbar";
 import Hero from "./Hero";
 import About from "./About";
@@ -10,13 +11,23 @@ export default function Home() {
   return (
     <main className="">
       <Navbar />
-      <Hero />
-      <About />
-      <WhyChooseUs />
-      <Carousel />
-      <Sponsors />
-
+      <section id="hero">
+        <Hero />
+      </section>
+      <section id="about">
+        <About />
+      </section>
+      <section id="whyus">
+        <WhyChooseUs />
+      </section>
+      <section id="carousel">
+        <Carousel />
+      </section>
+      <section id="sponsors">
+        <Sponsors />
+      </section>
       <Footer />
     </main>
   );
 }
+
