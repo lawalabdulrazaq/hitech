@@ -1,0 +1,45 @@
+.
+├── app
+│   ├── admin
+│   │   ├── components
+│   │   │   ├── AdminLayout.jsx
+│   │   │   ├── AdminSidebar.jsx
+│   │   │   ├── AdminHeader.jsx
+│   │   │   ├── DataTable.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── PackageCard.jsx
+│   │   │   ├── MediaCard.jsx
+│   │   │   ├── FormModal.jsx
+│   │   │   ├── ImageUploader.jsx
+│   │   │   ├── SearchInput.jsx
+│   │   │   ├── FiltersPanel.jsx
+│   │   │   ├── StatsCard.jsx
+│   │   │   └── ProtectedRoute.jsx
+│   │   ├── dashboard
+│   │   │   └── page.js
+│   │   ├── products
+│   │   │   ├── page.js
+│   │   │   ├── single
+│   │   │   │   └── page.js
+│   │   │   └── packages
+│   │   │       └── page.js
+│   │   ├── media
+│   │   │   └── page.js
+│   │   ├── inventory
+│   │   │   └── page.js
+│   │   ├── quotes
+│   │   │   └── page.js
+│   │   ├── orders
+│   │   │   └── page.js
+│   │   ├── customers
+│   │   │   └── page.js
+│   │   ├── settings
+│   │   │   └── page.js
+│   │   ├── layout.js
+│   │   └── page.js
+│   ├── hooks
+│   │   ├── useAdminAuth.js
+│   │   ├── useSearchAndFilter.js
+│   │   └── useBulkActions.js
+│   └── utils
+│       └── adminHelpers.js

@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "react-hook-form": "^7.48.2",
+    "react-hot-toast": "^2.4.1",
+    "recharts": "^2.8.0",
+    "date-fns": "^2.30.0",
+    "react-dropzone": "^14.2.3",
+    "jspdf": "^2.5.1",
+    "html2canvas": "^1.4.1"
+  }
+}
