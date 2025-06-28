@@ -1,0 +1,73 @@
+.
+├── FRONTEND-OUTLINE.md
+├── README.md
+├── app
+│   ├── About.jsx                    # ✅ Existing
+│   ├── ClientProviders.js           # ✅ Existing
+│   ├── Hero.jsx                     # ✅ Existing
+│   ├── Sponsors.jsx                 # ✅ Existing
+│   ├── WhyChooseUs.jsx             # ✅ Existing
+│   ├── components                   # ✅ Existing folder
+│   │   ├── Carousel.jsx            # ✅ Existing
+│   │   ├── Footer.jsx              # ✅ Existing
+│   │   ├── Navbar.jsx              # ✅ Existing
+│   │   └── image/                  # ✅ Existing images
+│   ├── 🆕 admin/                   # 🆕 NEW ADMIN SECTION
+│   │   ├── layout.tsx              # 🆕 Admin layout wrapper
+│   │   ├── dashboard/
+│   │   │   └── page.tsx            # 🆕 Main dashboard
+│   │   ├── products/
+│   │   │   ├── single/
+│   │   │   │   └── page.tsx        # 🆕 Single products page
+│   │   │   └── packages/
+│   │   │       └── page.tsx        # 🆕 Solar packages page
+│   │   ├── media/
+│   │   │   └── page.tsx            # 🆕 Media management
+│   │   ├── inventory/
+│   │   │   └── page.tsx            # 🆕 Inventory management
+│   │   ├── quotes/
+│   │   │   └── page.tsx            # 🆕 Quote management
+│   │   ├── orders/
+│   │   │   └── page.tsx            # 🆕 Order management
+│   │   ├── customers/
+│   │   │   └── page.tsx            # 🆕 Customer CRM
+│   │   ├── analytics/
+│   │   │   └── page.tsx            # 🆕 Analytics dashboard
+│   │   └── settings/
+│   │       └── page.tsx            # 🆕 Admin settings
+│   ├── globals.css                  # ✅ Existing
+│   ├── icon.png                     # ✅ Existing
+│   ├── layout.js                    # ✅ Existing (Main app layout)
+│   └── page.js                      # ✅ Existing (Home page)
+├── components/                      # ✅ Existing folder
+│   ├── 🆕 admin/                   # 🆕 NEW ADMIN COMPONENTS FOLDER
+│   │   ├── admin-sidebar.tsx       # 🆕 Admin navigation sidebar
+│   │   ├── admin-header.tsx        # 🆕 Admin top header
+│   │   ├── dashboard-stats.tsx     # 🆕 Dashboard statistics cards
+│   │   ├── recent-orders.tsx       # 🆕 Recent orders component
+│   │   ├── low-stock-alerts.tsx    # 🆕 Inventory alerts
+│   │   ├── data-table.tsx          # 🆕 Reusable data table
+│   │   ├── product-form.tsx        # 🆕 Product creation/edit form
+│   │   ├── quote-builder.tsx       # 🆕 Interactive quote builder
+│   │   ├── media-uploader.tsx      # 🆕 File upload component
+│   │   ├── customer-form.tsx       # 🆕 Customer management form
+│   │   └── analytics-charts.tsx    # 🆕 Charts for analytics
+│   └── ui/                         # 🆕 shadcn/ui components (if not exists)
+│       ├── button.tsx              # 🆕 shadcn button
+│       ├── card.tsx                # 🆕 shadcn card
+│       ├── table.tsx               # 🆕 shadcn table
+│       ├── sidebar.tsx             # 🆕 shadcn sidebar
+│       ├── input.tsx               # 🆕 shadcn input
+│       ├── badge.tsx               # 🆕 shadcn badge
+│       └── ... (other shadcn components)
+├── convex/                         # ✅ Existing backend
+│   ├── analytics.js                # ✅ Existing - connects to admin analytics
+│   ├── categories.js               # ✅ Existing - connects to product management
+│   ├── inquiries.js                # ✅ Existing - connects to customer management
+│   ├── media.js                    # ✅ Existing - connects to media management
+│   ├── singleItems.js              # ✅ Existing - connects to product management
+│   ├── solarPackages.js            # ✅ Existing - connects to package management
+│   └── ... (other existing files)
+├── public/                         # ✅ Existing
+│   └── images/                     # ✅ Existing
+└── ... (other config files)        # ✅ Existing
