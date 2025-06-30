@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/admin/data-table"
 import { Badge } from "@/components/ui/badge"
+import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, Edit, MoreHorizontal, Plus, Trash } from "lucide-react"
 import {
   DropdownMenu,
@@ -13,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import type { ColumnDef } from "@tanstack/react-table"
 
 interface Product {
   id: string
@@ -56,26 +56,6 @@ const mockProducts: Product[] = [
     stock: 12,
     minStock: 5,
     status: "active",
-  },
-  {
-    id: "4",
-    name: "Solar Panel 300W",
-    sku: "PANEL-004",
-    category: "Panels",
-    price: 249.99,
-    stock: 8,
-    minStock: 6,
-    status: "active",
-  },
-  {
-    id: "5",
-    name: "Inverter 2000W",
-    sku: "INV-005",
-    category: "Inverters",
-    price: 399.99,
-    stock: 3,
-    minStock: 5,
-    status: "low-stock",
   },
 ]
 

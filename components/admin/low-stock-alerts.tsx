@@ -1,30 +1,28 @@
-"use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { AlertTriangle, Package } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { AlertTriangle } from "lucide-react"
 
 const lowStockItems = [
   {
-    id: "BATT-001",
+    id: "1",
     name: "Solar Battery 12V 100Ah",
-    currentStock: 5,
-    minStock: 10,
-    category: "Batteries",
+    current: 5,
+    minimum: 10,
+    status: "low",
   },
   {
-    id: "FAN-002",
+    id: "2",
     name: "DC Ceiling Fan 48V",
-    currentStock: 2,
-    minStock: 8,
-    category: "Fans",
+    current: 2,
+    minimum: 8,
+    status: "critical",
   },
   {
-    id: "CTRL-003",
+    id: "3",
     name: "MPPT Controller 60A",
-    currentStock: 3,
-    minStock: 12,
-    category: "Controllers",
+    current: 0,
+    minimum: 5,
+    status: "out",
   },
 ]
 
@@ -40,27 +38,20 @@ export function LowStockAlerts() {
       <CardContent>
         <div className="space-y-4">
           {lowStockItems.map((item) => (
-            <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg bg-orange-50">
-              <div className="flex items-center gap-3">
-                <Package className="h-8 w-8 text-orange-500" />
-                <div>
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {item.id} • {item.category}
-                  </p>
-                </div>
+            <div key={item.id} className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">{item.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  Current: {item.current} | Min: {item.minimum}
+                </p>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <p className="text-sm font-medium text-orange-600">
-                    {item.currentStock} / {item.minStock}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Current / Min</p>
-                </div>
-                <Button size="sm" variant="outline">
-                  Reorder
-                </Button>
-              </div>
+              <Badge
+                variant={
+                  item.status === "out" ? "destructive" : item.status === "critical" ? "destructive" : "secondary"
+                }
+              >
+                {item.status === "out" ? "Out of Stock" : item.status === "critical" ? "Critical" : "Low"}
+              </Badge>
             </div>
           ))}
         </div>

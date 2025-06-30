@@ -19,7 +19,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Ensure main website styles don't conflict with admin */
@@ -30,4 +30,10 @@ body {
 /* Hide admin-specific classes from main site */
 body:not(.admin-layout) [data-sidebar] {
   display: none !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

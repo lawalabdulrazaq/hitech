@@ -1,7 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Package, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { DataTable } from "@/components/admin/data-table"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { ColumnDef } from "@tanstack/react-table"
+import { ArrowUpDown, Package, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react"
 
 interface InventoryItem {
   id: string
@@ -17,7 +22,7 @@ interface InventoryItem {
   supplier: string
   location: string
   lastRestocked: string
-  status: "in-stock" | "low-stock" | "out-of-stock"
+  status: "in-stock" | "low-stock" | "out-of-stock" | "reorder"
 }
 
 const mockInventory: InventoryItem[] = [
@@ -74,23 +79,76 @@ const mockInventory: InventoryItem[] = [
 export default function InventoryPage() {
   const [inventory, setInventory] = useState<InventoryItem[]>(mockInventory)
 
+  const columns: ColumnDef<InventoryItem>[] = [
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Product
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+    },
+    {
+      accessorKey: "sku",
+      header: "SKU",
+    },
+    {
+      accessorKey: "category",
+      header: "Category",
+    },
+    {
+      accessorKey: "currentStock",
+      header: "Current Stock",
+      cell: ({ row }) => {
+        const current = row.getValue("currentStock") as number
+        const min = row.original.minStock
+        return (
+          <div className="flex items-center gap-2">
+            <span>{current}</span>
+            {current <= min && <AlertTriangle className="h-4 w-4 text-orange-500" />}
+          </div>
+        )
+      },
+    },
+    {
+      accessorKey: "available",
+      header: "Available",
+    },
+    {
+      accessorKey: "reserved",
+      header: "Reserved",
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row.getValue("status") as string
+        const statusColors = {
+          "in-stock": "bg-green-100 text-green-800",
+          "low-stock": "bg-orange-100 text-orange-800",
+          "out-of-stock": "bg-red-100 text-red-800",
+          reorder: "bg-blue-100 text-blue-800",
+        }
+        return <Badge className={statusColors[status as keyof typeof statusColors]}>{status.replace("-", " ")}</Badge>
+      },
+    },
+    {
+      accessorKey: "location",
+      header: "Location",
+    },
+    {
+      accessorKey: "supplier",
+      header: "Supplier",
+    },
+  ]
+
   const totalItems = inventory.reduce((sum, item) => sum + item.currentStock, 0)
   const lowStockItems = inventory.filter((item) => item.currentStock <= item.minStock).length
   const outOfStockItems = inventory.filter((item) => item.currentStock === 0).length
   const totalValue = inventory.reduce((sum, item) => sum + item.currentStock * 100, 0)
-
-  const getStatusColor = (status: InventoryItem["status"]) => {
-    switch (status) {
-      case "in-stock":
-        return "bg-green-100 text-green-800"
-      case "low-stock":
-        return "bg-orange-100 text-orange-800"
-      case "out-of-stock":
-        return "bg-red-100 text-red-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
 
   return (
     <div className="space-y-6">
@@ -100,105 +158,60 @@ export default function InventoryPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="bg-white p-6 rounded-lg border">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Items</p>
-              <p className="text-2xl font-bold">{totalItems}</p>
-            </div>
-            <Package className="h-8 w-8 text-gray-400" />
-          </div>
-          <p className="text-xs text-gray-600 flex items-center mt-2">
-            <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-            <span className="text-green-500">+12%</span>
-            <span className="ml-1">from last month</span>
-          </p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Items</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalItems}</div>
+            <p className="text-xs text-muted-foreground flex items-center">
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <span className="text-green-500">+12%</span>
+              <span className="ml-1">from last month</span>
+            </p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg border">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Low Stock Alerts</p>
-              <p className="text-2xl font-bold text-orange-600">{lowStockItems}</p>
-            </div>
-            <AlertTriangle className="h-8 w-8 text-orange-500" />
-          </div>
-          <p className="text-xs text-gray-600 mt-2">Items below minimum stock</p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Low Stock Alerts</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-600">{lowStockItems}</div>
+            <p className="text-xs text-muted-foreground">Items below minimum stock</p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg border">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Out of Stock</p>
-              <p className="text-2xl font-bold text-red-600">{outOfStockItems}</p>
-            </div>
-            <AlertTriangle className="h-8 w-8 text-red-500" />
-          </div>
-          <p className="text-xs text-gray-600 mt-2">Items requiring immediate restock</p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-red-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">{outOfStockItems}</div>
+            <p className="text-xs text-muted-foreground">Items requiring immediate restock</p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg border">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Inventory Value</p>
-              <p className="text-2xl font-bold">${totalValue.toLocaleString()}</p>
-            </div>
-            <TrendingUp className="h-8 w-8 text-gray-400" />
-          </div>
-          <p className="text-xs text-gray-600 flex items-center mt-2">
-            <TrendingDown className="h-3 w-3 text-red-500 mr-1" />
-            <span className="text-red-500">-2%</span>
-            <span className="ml-1">from last month</span>
-          </p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">${totalValue.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground flex items-center">
+              <TrendingDown className="h-3 w-3 text-red-500 mr-1" />
+              <span className="text-red-500">-2%</span>
+              <span className="ml-1">from last month</span>
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="bg-white rounded-lg border">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Inventory Items</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4">Product</th>
-                  <th className="text-left py-3 px-4">SKU</th>
-                  <th className="text-left py-3 px-4">Category</th>
-                  <th className="text-left py-3 px-4">Current Stock</th>
-                  <th className="text-left py-3 px-4">Available</th>
-                  <th className="text-left py-3 px-4">Reserved</th>
-                  <th className="text-left py-3 px-4">Status</th>
-                  <th className="text-left py-3 px-4">Location</th>
-                  <th className="text-left py-3 px-4">Supplier</th>
-                </tr>
-              </thead>
-              <tbody>
-                {inventory.map((item) => (
-                  <tr key={item.id} className="border-b">
-                    <td className="py-3 px-4">{item.name}</td>
-                    <td className="py-3 px-4">{item.sku}</td>
-                    <td className="py-3 px-4">{item.category}</td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <span>{item.currentStock}</span>
-                        {item.currentStock <= item.minStock && <AlertTriangle className="h-4 w-4 text-orange-500" />}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">{item.available}</td>
-                    <td className="py-3 px-4">{item.reserved}</td>
-                    <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded text-xs ${getStatusColor(item.status)}`}>
-                        {item.status.replace("-", " ")}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">{item.location}</td>
-                    <td className="py-3 px-4">{item.supplier}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <DataTable columns={columns} data={inventory} searchKey="name" searchPlaceholder="Search inventory..." />
     </div>
   )
 }
