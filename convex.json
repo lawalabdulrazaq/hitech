@@ -1,0 +1,9 @@
+{
+  "functions": "convex/",
+  "authInfo": [
+    {
+      "domain": "https://hearty-caiman-345.convex.cloud",
+      "applicationID": "convex"
+    }
+  ]
+}
