@@ -1,32 +1,36 @@
-import Navbar from "./components/Navbar"
-import Hero from "./Hero"
-import About from "./About"
-import WhyChooseUs from "./WhyChooseUs"
-import Sponsors from "./Sponsors"
-import Footer from "./components/Footer"
-import Carousel from "./components/Carousel"
-import type React from "react"
+"use client"
 
-export default function Home(): React.ReactElement {
+import { SidebarProvider } from "@/components/ui/sidebar" // Adjust path if needed
+import { AdminSidebar } from "@/components/admin/admin-sidebar"
+import { AdminHeader } from "@/components/admin/admin-header"
+import Dashboard from "./dashboard/page"
+import MediaPage from "./media/page"
+import InventoryPage from "./inventory/page"
+import OrdersPage from "./orders/page"
+import CustomersPage from "./customers/page"
+import AnalyticsPage from "./analytics/page"
+import QuotesPage from "./quotes/page"
+import SettingsPage from "./settings/page"
+
+export default function AdminHome() {
   return (
-    <main className="">
-      <Navbar />
-      <section id="hero">
-        <Hero />
-      </section>
-      <section id="about">
-        <About />
-      </section>
-      <section id="whyus">
-        <WhyChooseUs />
-      </section>
-      <section id="carousel">
-        <Carousel />
-      </section>
-      <section id="sponsors">
-        <Sponsors />
-      </section>
-      <Footer />
-    </main>
+    <SidebarProvider>
+      <div className="flex min-h-screen">
+        <AdminSidebar />
+        <div className="flex-1 flex flex-col">
+          <AdminHeader />
+          <main className="flex-1 p-8 bg-gray-50 space-y-12">
+            <Dashboard />
+            <MediaPage />
+            <InventoryPage />
+            <OrdersPage />
+            <CustomersPage />
+            <AnalyticsPage />
+            <QuotesPage />
+            <SettingsPage />
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   )
 }
