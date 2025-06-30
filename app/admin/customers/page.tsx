@@ -1,195 +1,137 @@
 "use client"
 
 import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/admin/data-table"
+import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, Eye, MoreHorizontal, Plus, Mail, Phone } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Search, Plus, Phone, Mail, MapPin } from "lucide-react"
 
 interface Customer {
   id: string
   name: string
   email: string
   phone: string
-  segment: "residential" | "commercial" | "industrial"
-  status: "active" | "inactive" | "vip"
+  address: string
   totalOrders: number
   totalSpent: number
+  status: "active" | "inactive"
   lastOrder: string
-  joinDate: string
 }
 
-const mockCustomers: Customer[] = [
+const customers: Customer[] = [
   {
     id: "1",
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
-    segment: "residential",
-    status: "active",
+    name: "Adebayo Johnson",
+    email: "adebayo.johnson@email.com",
+    phone: "+234 803 123 4567",
+    address: "Lagos, Nigeria",
     totalOrders: 3,
-    totalSpent: 2499.99,
+    totalSpent: 450000,
+    status: "active",
     lastOrder: "2024-01-15",
-    joinDate: "2023-06-15",
   },
   {
     id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
-    phone: "+1 (555) 234-5678",
-    segment: "commercial",
-    status: "vip",
-    totalOrders: 8,
-    totalSpent: 15299.99,
-    lastOrder: "2024-01-14",
-    joinDate: "2023-03-22",
+    name: "Fatima Ibrahim",
+    email: "fatima.ibrahim@email.com",
+    phone: "+234 806 987 6543",
+    address: "Abuja, Nigeria",
+    totalOrders: 1,
+    totalSpent: 180000,
+    status: "active",
+    lastOrder: "2024-01-10",
   },
   {
     id: "3",
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    phone: "+1 (555) 345-6789",
-    segment: "residential",
+    name: "Chinedu Okafor",
+    email: "chinedu.okafor@email.com",
+    phone: "+234 809 456 7890",
+    address: "Port Harcourt, Nigeria",
+    totalOrders: 5,
+    totalSpent: 720000,
     status: "active",
-    totalOrders: 1,
-    totalSpent: 899.99,
-    lastOrder: "2024-01-10",
-    joinDate: "2024-01-05",
+    lastOrder: "2024-01-20",
   },
 ]
 
 export default function CustomersPage() {
-  const [customers, setCustomers] = useState<Customer[]>(mockCustomers)
+  const [searchTerm, setSearchTerm] = useState("")
 
-  const columns: ColumnDef<Customer>[] = [
-    {
-      accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Name
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
-    },
-    {
-      accessorKey: "email",
-      header: "Email",
-    },
-    {
-      accessorKey: "phone",
-      header: "Phone",
-    },
-    {
-      accessorKey: "segment",
-      header: "Segment",
-      cell: ({ row }) => {
-        const segment = row.getValue("segment") as string
-        const segmentColors = {
-          residential: "bg-blue-100 text-blue-800",
-          commercial: "bg-green-100 text-green-800",
-          industrial: "bg-purple-100 text-purple-800",
-        }
-        return <Badge className={segmentColors[segment as keyof typeof segmentColors]}>{segment}</Badge>
-      },
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => {
-        const status = row.getValue("status") as string
-        const statusColors = {
-          active: "bg-green-100 text-green-800",
-          inactive: "bg-gray-100 text-gray-800",
-          vip: "bg-yellow-100 text-yellow-800",
-        }
-        return <Badge className={statusColors[status as keyof typeof statusColors]}>{status}</Badge>
-      },
-    },
-    {
-      accessorKey: "totalOrders",
-      header: "Orders",
-    },
-    {
-      accessorKey: "totalSpent",
-      header: "Total Spent",
-      cell: ({ row }) => {
-        const amount = Number.parseFloat(row.getValue("totalSpent"))
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(amount)
-        return formatted
-      },
-    },
-    {
-      accessorKey: "lastOrder",
-      header: "Last Order",
-      cell: ({ row }) => {
-        return new Date(row.getValue("lastOrder")).toLocaleDateString()
-      },
-    },
-    {
-      id: "actions",
-      cell: ({ row }) => {
-        const customer = row.original
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem>
-                <Eye className="mr-2 h-4 w-4" />
-                View Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Mail className="mr-2 h-4 w-4" />
-                Send Email
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Phone className="mr-2 h-4 w-4" />
-                Call Customer
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View Orders</DropdownMenuItem>
-              <DropdownMenuItem>Create Quote</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      },
-    },
-  ]
+  const filteredCustomers = customers.filter(
+    (customer) =>
+      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.email.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
-          <p className="text-muted-foreground">Manage your customer relationships and track their activity.</p>
+          <p className="text-muted-foreground">Manage your customer relationships</p>
         </div>
         <Button>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="h-4 w-4 mr-2" />
           Add Customer
         </Button>
       </div>
 
-      <DataTable columns={columns} data={customers} searchKey="name" searchPlaceholder="Search customers..." />
+      <Card>
+        <CardHeader>
+          <CardTitle>Customer Database</CardTitle>
+          <CardDescription>View and manage all your customers</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-2 mb-6">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search customers..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+
+          <div className="grid gap-4">
+            {filteredCustomers.map((customer) => (
+              <Card key={customer.id}>
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-semibold">{customer.name}</h3>
+                        <Badge variant={customer.status === "active" ? "default" : "secondary"}>
+                          {customer.status}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Mail className="h-4 w-4" />
+                          {customer.email}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Phone className="h-4 w-4" />
+                          {customer.phone}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          {customer.address}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-semibold">₦{customer.totalSpent.toLocaleString()}</div>
+                      <div className="text-sm text-muted-foreground">{customer.totalOrders} orders</div>
+                      <div className="text-sm text-muted-foreground">Last: {customer.lastOrder}</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

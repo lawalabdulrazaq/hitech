@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -90,17 +90,17 @@ const config: Config = {
     themes: [
       {
         mytheme: {
-          primary: "#f59e0b",
-          secondary: "#10b981",
-          accent: "#3b82f6",
-          neutral: "#374151",
-          "base-100": "#1f2937",
-          "base-200": "#111827",
-          "base-300": "#0f172a",
-          info: "#06b6d4",
-          success: "#10b981",
-          warning: "#f59e0b",
-          error: "#ef4444",
+          primary: "#fbbf24",
+          secondary: "#f3f4f6",
+          accent: "#1dcdbc",
+          neutral: "#2a2e37",
+          "base-100": "#3d4451",
+          "base-200": "#2a2e37",
+          "base-300": "#16181d",
+          info: "#3abff8",
+          success: "#36d399",
+          warning: "#fbbd23",
+          error: "#f87272",
         },
       },
     ],

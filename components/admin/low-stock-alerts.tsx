@@ -1,31 +1,43 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 
+const lowStockItems = [
+  {
+    name: "Lithium Battery 200Ah",
+    current: 8,
+    minimum: 15,
+    status: "low",
+  },
+  {
+    name: "Pure Sine Wave Inverter 5KVA",
+    current: 3,
+    minimum: 8,
+    status: "critical",
+  },
+  {
+    name: "MPPT Controller 40A",
+    current: 0,
+    minimum: 10,
+    status: "out",
+  },
+]
+
 export function LowStockAlerts() {
-  const lowStockItems = [
-    {
-      name: "Solar Panel 300W",
-      current: 5,
-      minimum: 10,
-    },
-    {
-      name: "Lithium Battery 100Ah",
-      current: 2,
-      minimum: 8,
-    },
-    {
-      name: "Charge Controller 60A",
-      current: 3,
-      minimum: 6,
-    },
-    {
-      name: "DC Protector 32A",
-      current: 1,
-      minimum: 5,
-    },
-  ]
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "low":
+        return "text-orange-600"
+      case "critical":
+        return "text-red-600"
+      case "out":
+        return "text-red-800"
+      default:
+        return "text-gray-600"
+    }
+  }
 
   return (
     <Card>
@@ -34,20 +46,21 @@ export function LowStockAlerts() {
           <AlertTriangle className="h-5 w-5 text-orange-500" />
           Low Stock Alerts
         </CardTitle>
+        <CardDescription>Items that need restocking</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {lowStockItems.map((item) => (
-            <div key={item.name} className="flex items-center justify-between">
+          {lowStockItems.map((item, index) => (
+            <div key={index} className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">{item.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  Current: {item.current} | Min: {item.minimum}
+                <p className="font-medium">{item.name}</p>
+                <p className={`text-sm ${getStatusColor(item.status)}`}>
+                  {item.current} / {item.minimum} minimum
                 </p>
               </div>
-              <div className="text-right">
-                <span className="text-sm font-medium text-orange-600">{item.current} left</span>
-              </div>
+              <Button size="sm" variant="outline">
+                Reorder
+              </Button>
             </div>
           ))}
         </div>

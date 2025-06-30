@@ -1,217 +1,200 @@
 "use client"
 
 import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/admin/data-table"
+import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, Package, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react"
+import { Search, Plus, Package, AlertTriangle } from "lucide-react"
 
 interface InventoryItem {
   id: string
   name: string
-  sku: string
   category: string
+  sku: string
   currentStock: number
-  minStock: number
-  maxStock: number
-  reserved: number
-  available: number
-  reorderPoint: number
+  minimumStock: number
+  price: number
   supplier: string
-  location: string
   lastRestocked: string
-  status: "in-stock" | "low-stock" | "out-of-stock" | "reorder"
 }
 
-const mockInventory: InventoryItem[] = [
+const inventoryItems: InventoryItem[] = [
   {
     id: "1",
-    name: "Solar Battery 12V 100Ah",
-    sku: "BATT-001",
-    category: "Batteries",
-    currentStock: 15,
-    minStock: 10,
-    maxStock: 50,
-    reserved: 3,
-    available: 12,
-    reorderPoint: 15,
-    supplier: "PowerTech Solutions",
-    location: "Warehouse A-1",
+    name: "Monocrystalline Solar Panel 300W",
+    category: "Solar Panels",
+    sku: "SP-MONO-300",
+    currentStock: 45,
+    minimumStock: 20,
+    price: 85000,
+    supplier: "SolarTech Nigeria",
     lastRestocked: "2024-01-10",
-    status: "in-stock",
   },
   {
     id: "2",
-    name: "DC Ceiling Fan 48V",
-    sku: "FAN-002",
-    category: "Fans",
-    currentStock: 5,
-    minStock: 8,
-    maxStock: 30,
-    reserved: 2,
-    available: 3,
-    reorderPoint: 12,
-    supplier: "EcoFan Industries",
-    location: "Warehouse B-2",
+    name: "Lithium Battery 200Ah",
+    category: "Batteries",
+    sku: "BAT-LI-200",
+    currentStock: 8,
+    minimumStock: 15,
+    price: 320000,
+    supplier: "PowerStore Lagos",
     lastRestocked: "2024-01-05",
-    status: "low-stock",
   },
   {
     id: "3",
-    name: "MPPT Controller 60A",
-    sku: "CTRL-003",
+    name: "MPPT Charge Controller 60A",
     category: "Controllers",
-    currentStock: 0,
-    minStock: 5,
-    maxStock: 25,
-    reserved: 0,
-    available: 0,
-    reorderPoint: 8,
-    supplier: "Solar Control Co.",
-    location: "Warehouse A-3",
-    lastRestocked: "2023-12-20",
-    status: "out-of-stock",
+    sku: "CTRL-MPPT-60",
+    currentStock: 25,
+    minimumStock: 10,
+    price: 45000,
+    supplier: "ElectroMax",
+    lastRestocked: "2024-01-12",
+  },
+  {
+    id: "4",
+    name: "Pure Sine Wave Inverter 5KVA",
+    category: "Inverters",
+    sku: "INV-PSW-5K",
+    currentStock: 3,
+    minimumStock: 8,
+    price: 180000,
+    supplier: "PowerTech Solutions",
+    lastRestocked: "2023-12-28",
   },
 ]
 
 export default function InventoryPage() {
-  const [inventory, setInventory] = useState<InventoryItem[]>(mockInventory)
+  const [searchTerm, setSearchTerm] = useState("")
 
-  const columns: ColumnDef<InventoryItem>[] = [
-    {
-      accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Product
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
-    },
-    {
-      accessorKey: "sku",
-      header: "SKU",
-    },
-    {
-      accessorKey: "category",
-      header: "Category",
-    },
-    {
-      accessorKey: "currentStock",
-      header: "Current Stock",
-      cell: ({ row }) => {
-        const current = row.getValue("currentStock") as number
-        const min = row.original.minStock
-        return (
-          <div className="flex items-center gap-2">
-            <span>{current}</span>
-            {current <= min && <AlertTriangle className="h-4 w-4 text-orange-500" />}
-          </div>
-        )
-      },
-    },
-    {
-      accessorKey: "available",
-      header: "Available",
-    },
-    {
-      accessorKey: "reserved",
-      header: "Reserved",
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => {
-        const status = row.getValue("status") as string
-        const statusColors = {
-          "in-stock": "bg-green-100 text-green-800",
-          "low-stock": "bg-orange-100 text-orange-800",
-          "out-of-stock": "bg-red-100 text-red-800",
-          reorder: "bg-blue-100 text-blue-800",
-        }
-        return <Badge className={statusColors[status as keyof typeof statusColors]}>{status.replace("-", " ")}</Badge>
-      },
-    },
-    {
-      accessorKey: "location",
-      header: "Location",
-    },
-    {
-      accessorKey: "supplier",
-      header: "Supplier",
-    },
-  ]
+  const filteredItems = inventoryItems.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.sku.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
 
-  const totalItems = inventory.reduce((sum, item) => sum + item.currentStock, 0)
-  const lowStockItems = inventory.filter((item) => item.currentStock <= item.minStock).length
-  const outOfStockItems = inventory.filter((item) => item.currentStock === 0).length
-  const totalValue = inventory.reduce((sum, item) => sum + item.currentStock * 100, 0)
+  const getStockStatus = (current: number, minimum: number) => {
+    if (current === 0) return { status: "out-of-stock", color: "destructive" }
+    if (current <= minimum) return { status: "low-stock", color: "secondary" }
+    return { status: "in-stock", color: "default" }
+  }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
-        <p className="text-muted-foreground">Track stock levels, manage reorders, and monitor inventory health.</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Inventory</h1>
+          <p className="text-muted-foreground">Manage your product inventory and stock levels</p>
+        </div>
+        <Button>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Product
+        </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Items</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalItems}</div>
-            <p className="text-xs text-muted-foreground flex items-center">
-              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-              <span className="text-green-500">+12%</span>
-              <span className="ml-1">from last month</span>
-            </p>
+            <div className="text-2xl font-bold">{inventoryItems.length}</div>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Low Stock Alerts</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-orange-500" />
+            <CardTitle className="text-sm font-medium">Low Stock Items</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{lowStockItems}</div>
-            <p className="text-xs text-muted-foreground">Items below minimum stock</p>
+            <div className="text-2xl font-bold text-orange-600">
+              {inventoryItems.filter((item) => item.currentStock <= item.minimumStock).length}
+            </div>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{outOfStockItems}</div>
-            <p className="text-xs text-muted-foreground">Items requiring immediate restock</p>
+            <div className="text-2xl font-bold text-red-600">
+              {inventoryItems.filter((item) => item.currentStock === 0).length}
+            </div>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Value</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalValue.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground flex items-center">
-              <TrendingDown className="h-3 w-3 text-red-500 mr-1" />
-              <span className="text-red-500">-2%</span>
-              <span className="ml-1">from last month</span>
-            </p>
+            <div className="text-2xl font-bold">
+              ₦{inventoryItems.reduce((total, item) => total + item.currentStock * item.price, 0).toLocaleString()}
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      <DataTable columns={columns} data={inventory} searchKey="name" searchPlaceholder="Search inventory..." />
+      <Card>
+        <CardHeader>
+          <CardTitle>Inventory Items</CardTitle>
+          <CardDescription>Monitor and manage your product stock levels</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-2 mb-6">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search inventory..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+
+          <div className="space-y-4">
+            {filteredItems.map((item) => {
+              const stockStatus = getStockStatus(item.currentStock, item.minimumStock)
+              return (
+                <Card key={item.id}>
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-semibold">{item.name}</h3>
+                          <Badge variant={stockStatus.color as any}>{stockStatus.status}</Badge>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <span>SKU: {item.sku}</span>
+                          <span>Category: {item.category}</span>
+                          <span>Supplier: {item.supplier}</span>
+                        </div>
+                        <div className="text-sm text-muted-foreground">Last restocked: {item.lastRestocked}</div>
+                      </div>
+                      <div className="text-right space-y-1">
+                        <div className="text-lg font-semibold">₦{item.price.toLocaleString()}</div>
+                        <div className="text-sm">
+                          Stock: {item.currentStock} / Min: {item.minimumStock}
+                        </div>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline">
+                            Edit
+                          </Button>
+                          <Button size="sm">Restock</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

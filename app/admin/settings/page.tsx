@@ -1,142 +1,177 @@
-interface User {
-  id: string
-  name: string
-  email: string
-  status: "active" | "pending" | "inactive"
-}
+"use client"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import { Textarea } from "@/components/ui/textarea"
+import { Save, Bell, Mail, Shield, Database } from "lucide-react"
 
 export default function SettingsPage() {
-  const users: User[] = [
-    {
-      id: "1",
-      name: "Admin User",
-      email: "admin@solarsolutions.com",
-      status: "active",
-    },
-    {
-      id: "2",
-      name: "Manager User",
-      email: "manager@solarsolutions.com",
-      status: "active",
-    },
-    {
-      id: "3",
-      name: "Staff User",
-      email: "staff@solarsolutions.com",
-      status: "pending",
-    },
-  ]
-
-  const getStatusColor = (status: User["status"]) => {
-    switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800"
-      case "pending":
-        return "bg-yellow-100 text-yellow-800"
-      case "inactive":
-        return "bg-gray-100 text-gray-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
-
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Manage system settings and user permissions.</p>
+        <p className="text-muted-foreground">Manage your application settings and preferences</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="bg-white p-6 rounded-lg border">
-          <h3 className="text-lg font-semibold mb-4">General Settings</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-              <input
-                type="text"
-                defaultValue="Solar Solutions Inc."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
-              <input
-                type="email"
-                defaultValue="admin@solarsolutions.com"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-              <input
-                type="tel"
-                defaultValue="+1 (555) 123-4567"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Changes</button>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg border">
-          <h3 className="text-lg font-semibold mb-4">User Management</h3>
-          <div className="space-y-3">
-            {users.map((user) => (
-              <div key={user.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <div>
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-sm text-gray-600">{user.email}</p>
-                </div>
-                <span className={`px-2 py-1 rounded text-sm ${getStatusColor(user.status)}`}>
-                  {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                </span>
+      <div className="grid gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Company Information
+            </CardTitle>
+            <CardDescription>Update your company details and contact information</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="company-name">Company Name</Label>
+                <Input id="company-name" defaultValue="Solar Power Innovation Limited" />
               </div>
-            ))}
-          </div>
-          <button className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add User</button>
-        </div>
-      </div>
+              <div className="space-y-2">
+                <Label htmlFor="company-email">Email</Label>
+                <Input id="company-email" type="email" defaultValue="info@solarpower.ng" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="company-phone">Phone</Label>
+                <Input id="company-phone" defaultValue="+234 902 105 5672" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="company-website">Website</Label>
+                <Input id="company-website" defaultValue="www.solarpower.ng" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="company-address">Address</Label>
+              <Textarea
+                id="company-address"
+                defaultValue="SHOP 4 I.K UMAR AUDI OLD AIRPORT ROAD, AFTER BOMAS SUPERMARKET, MINNA, NIGER STATE."
+              />
+            </div>
+            <Button>
+              <Save className="h-4 w-4 mr-2" />
+              Save Changes
+            </Button>
+          </CardContent>
+        </Card>
 
-      <div className="bg-white p-6 rounded-lg border">
-        <h3 className="text-lg font-semibold mb-4">System Preferences</h3>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Default Currency</label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Time Zone</label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="UTC">UTC</option>
-              <option value="EST">Eastern Time</option>
-              <option value="PST">Pacific Time</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Low Stock Threshold</label>
-            <input
-              type="number"
-              defaultValue="10"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Quote Validity (Days)</label>
-            <input
-              type="number"
-              defaultValue="30"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-        <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-          Update Preferences
-        </button>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5" />
+              Notifications
+            </CardTitle>
+            <CardDescription>Configure your notification preferences</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label>Email Notifications</Label>
+                <p className="text-sm text-muted-foreground">Receive email notifications for new orders</p>
+              </div>
+              <Switch defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label>Low Stock Alerts</Label>
+                <p className="text-sm text-muted-foreground">Get notified when inventory is running low</p>
+              </div>
+              <Switch defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label>Quote Notifications</Label>
+                <p className="text-sm text-muted-foreground">Notifications for quote status changes</p>
+              </div>
+              <Switch />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label>Customer Messages</Label>
+                <p className="text-sm text-muted-foreground">Notifications for customer inquiries</p>
+              </div>
+              <Switch defaultChecked />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Mail className="h-5 w-5" />
+              Email Settings
+            </CardTitle>
+            <CardDescription>Configure email templates and SMTP settings</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="smtp-host">SMTP Host</Label>
+                <Input id="smtp-host" placeholder="smtp.gmail.com" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="smtp-port">SMTP Port</Label>
+                <Input id="smtp-port" placeholder="587" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="smtp-username">Username</Label>
+                <Input id="smtp-username" placeholder="your-email@gmail.com" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="smtp-password">Password</Label>
+                <Input id="smtp-password" type="password" placeholder="••••••••" />
+              </div>
+            </div>
+            <Button>
+              <Save className="h-4 w-4 mr-2" />
+              Save Email Settings
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Database className="h-5 w-5" />
+              System Settings
+            </CardTitle>
+            <CardDescription>General system configuration</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="currency">Default Currency</Label>
+                <Input id="currency" defaultValue="NGN (₦)" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="timezone">Timezone</Label>
+                <Input id="timezone" defaultValue="Africa/Lagos" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="tax-rate">Default Tax Rate (%)</Label>
+                <Input id="tax-rate" defaultValue="7.5" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="quote-validity">Quote Validity (Days)</Label>
+                <Input id="quote-validity" defaultValue="30" />
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label>Maintenance Mode</Label>
+                <p className="text-sm text-muted-foreground">Enable maintenance mode for the website</p>
+              </div>
+              <Switch />
+            </div>
+            <Button>
+              <Save className="h-4 w-4 mr-2" />
+              Save System Settings
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
