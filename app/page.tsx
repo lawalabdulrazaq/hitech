@@ -2,11 +2,28 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart3, Package, Users, ShoppingCart, Settings, ImageIcon } from "lucide-react"
+import Hero from "./Hero"
+import About from "./About"
+import WhyChooseUs from "./WhyChooseUs"
+import Sponsors from "./Sponsors"
+import AdminAccessButton from "../components/AdminAccessButton"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-16">
+        {/* Hero Section */}
+        <Hero />
+
+        {/* About Section */}
+        <About />
+
+        {/* Why Choose Us Section */}
+        <WhyChooseUs />
+
+        {/* Sponsors Section */}
+        <Sponsors />
+
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to Your Admin Dashboard</h1>
@@ -145,7 +162,10 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Admin Access Button - Only visible to authorized users */}
+        <AdminAccessButton />
       </div>
-    </div>
+    </main>
   )
 }
