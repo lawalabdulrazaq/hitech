@@ -1,87 +1,76 @@
+"use client"
+
+import { motion } from "framer-motion"
+import { Rubik } from "next/font/google"
 import Image from "next/image"
-import { CheckCircle, Users, Award, Zap } from "lucide-react"
+import AboutUSIMG from "../public/images/ik.webp"
+import type React from "react"
 
-export default function About() {
+const rubik = Rubik({ subsets: ["latin"] })
+
+const imageVariants = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 1 } },
+}
+
+const textVariants = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 2 } },
+}
+
+export default function About(): React.ReactElement {
   return (
-    <section id="about" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">About Solar Energy Solutions</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            With over 10 years of experience in the solar industry, we're committed to providing high-quality solar
-            solutions that help you save money and protect the environment.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Why Choose Solar Energy?</h3>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 text-green-500 mr-3 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900">Reduce Energy Bills</h4>
-                  <p className="text-gray-600">Save up to 90% on your monthly electricity costs</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 text-green-500 mr-3 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900">Increase Property Value</h4>
-                  <p className="text-gray-600">Solar installations can increase your home value by up to 4%</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 text-green-500 mr-3 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900">Environmental Impact</h4>
-                  <p className="text-gray-600">Reduce your carbon footprint and help fight climate change</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 text-green-500 mr-3 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900">Government Incentives</h4>
-                  <p className="text-gray-600">Take advantage of federal and state tax credits</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
+    <div className={`${rubik.className} overflow-x-hidden`} id="about">
+      <div className="hero min-h-screen ">
+        <div className="hero-content flex-col-reverse lg:flex-row mt-16 lg:mt-0 md:mt-0 px-4 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={imageVariants}
+            className="w-full lg:w-1/2 p-4 glass rounded-2xl md:mx-4"
+          >
             <Image
-              src="/images/w2.jpg"
-              alt="Solar installation team"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-lg"
+              alt="Hero Image"
+              src={AboutUSIMG || "/placeholder.svg"}
+              className="w-full  rounded-2xl"
+              layout="responsive"
             />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users className="h-8 w-8 text-blue-600" />
+          </motion.div>
+          <motion.div
+            className="w-full lg:w-1/2 lg:max-w-md"
+            initial="hidden"
+            whileInView="visible"
+            variants={textVariants}
+          >
+            <p className="my-2 w-[200px] p-1 text-primary font-medium rounded-xl">About us</p>
+            <h1 className="text-3xl lg:text-5xl font-semibold tracking-wide text-white">
+              We specialize in{" "}
+              <div className="text-xl p-4">
+                <span className="text-primary">Electrical Installations</span> <br />
+                <span className="text-primary">Solar Installations</span> <br />
+                <span className="text-primary">CCTV Installations</span> <br />
+                <span className="text-primary">Maintenance Services</span>
+              </div>
+            </h1>
+            <div className="py-6 text-white text-sm lg:text-md mb-2 font-semibold">
+              <p className="mb-2">
+                Our team of experts guarantees swift and reliable solutions, ensuring minimum downtime and maximum
+                effciency. With a strong focus on quality and customer satisfaction, we have established ourselves as a
+                trusted name in the industry. Count on us for all your electrical, solar, and security needs.
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">1000+ Happy Customers</h3>
-            <p className="text-gray-600">We've helped over 1000 families switch to solar energy</p>
-          </div>
-          <div className="text-center">
-            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Award className="h-8 w-8 text-green-600" />
+            <div className="flex flex-row">
+              <motion.button
+                className="btn btn-primary mr-1 text-white text-sm"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <a href="tel:+2349021055672">Call Now : 09021055672</a>{" "}
+              </motion.button>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Award Winning Service</h3>
-            <p className="text-gray-600">Recognized for excellence in solar installation and customer service</p>
-          </div>
-          <div className="text-center">
-            <div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Zap className="h-8 w-8 text-yellow-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">25 Year Warranty</h3>
-            <p className="text-gray-600">All our solar panels come with a comprehensive 25-year warranty</p>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

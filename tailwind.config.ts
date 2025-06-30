@@ -85,7 +85,26 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("daisyui")],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          primary: "#f59e0b",
+          secondary: "#10b981",
+          accent: "#3b82f6",
+          neutral: "#374151",
+          "base-100": "#1f2937",
+          "base-200": "#111827",
+          "base-300": "#0f172a",
+          info: "#06b6d4",
+          success: "#10b981",
+          warning: "#f59e0b",
+          error: "#ef4444",
+        },
+      },
+    ],
+  },
 } satisfies Config
 
 export default config

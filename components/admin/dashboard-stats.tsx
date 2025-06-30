@@ -1,40 +1,36 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowUpIcon, ArrowDownIcon, DollarSign, Package, ShoppingCart, Users } from "lucide-react"
-
-const stats = [
-  {
-    title: "Total Revenue",
-    value: "$45,231.89",
-    change: "+20.1%",
-    changeType: "positive",
-    icon: DollarSign,
-  },
-  {
-    title: "Orders",
-    value: "2,350",
-    change: "+180.1%",
-    changeType: "positive",
-    icon: ShoppingCart,
-  },
-  {
-    title: "Products",
-    value: "12,234",
-    change: "+19%",
-    changeType: "positive",
-    icon: Package,
-  },
-  {
-    title: "Active Customers",
-    value: "573",
-    change: "+201",
-    changeType: "positive",
-    icon: Users,
-  },
-]
+import { BarChart3, DollarSign, Package, Users } from "lucide-react"
 
 export function DashboardStats() {
+  const stats = [
+    {
+      title: "Total Revenue",
+      value: "₦2,450,000",
+      change: "+12.5%",
+      icon: DollarSign,
+    },
+    {
+      title: "Active Customers",
+      value: "1,234",
+      change: "+8.2%",
+      icon: Users,
+    },
+    {
+      title: "Products Sold",
+      value: "456",
+      change: "+15.3%",
+      icon: Package,
+    },
+    {
+      title: "Pending Orders",
+      value: "23",
+      change: "-2.1%",
+      icon: BarChart3,
+    },
+  ]
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => (
@@ -45,14 +41,9 @@ export function DashboardStats() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value}</div>
-            <p className="text-xs text-muted-foreground flex items-center">
-              {stat.changeType === "positive" ? (
-                <ArrowUpIcon className="h-3 w-3 text-green-500 mr-1" />
-              ) : (
-                <ArrowDownIcon className="h-3 w-3 text-red-500 mr-1" />
-              )}
-              <span className={stat.changeType === "positive" ? "text-green-500" : "text-red-500"}>{stat.change}</span>
-              <span className="ml-1">from last month</span>
+            <p className="text-xs text-muted-foreground">
+              <span className={stat.change.startsWith("+") ? "text-green-600" : "text-red-600"}>{stat.change}</span>{" "}
+              from last month
             </p>
           </CardContent>
         </Card>
